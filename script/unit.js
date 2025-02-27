@@ -7,12 +7,22 @@ function loadForm(file) {
         .then(response => response.text())
         .then(html => {
             document.getElementById('form-container').innerHTML = html;
+
             document.querySelectorAll('.tab-button').forEach(button => {
                 button.classList.remove('active');
             });
-            document.querySelector(`[onclick="loadForm('${file}')"]`).classList.add('active');
+
+            document.querySelectorAll('.tab-button').forEach(button => {
+                if (button.getAttribute('onclick') === `loadForm('${file}')`) {
+                    button.classList.add('active');
+                }
+            });
+
             document.getElementById('result-container').style.display = 'none';
-        });
+
+        })
+        .catch(error => console.error('Error loading form:', error));
+
 }
 
 function convert(event, type) {
@@ -71,7 +81,7 @@ function convertWeight(value, fromUnit, toUnit) {
     return valueInGrams / weightUnit[toUnit];
 }
 
-function convertTemp(value, fromUnit, toUnit) {
+function convertTemperature(value, fromUnit, toUnit) {
     if (fromUnit === toUnit) return value;
 
     let celsiusValue;
